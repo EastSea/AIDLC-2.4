@@ -48,7 +48,7 @@ redis://localhost:6379
 
 ```bash
 cd api
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
@@ -65,8 +65,10 @@ API 문서: http://localhost:8000/docs
 
 ```bash
 cd mock
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python mock-server.py
+python3 mock-server.py
 ```
 
 Mock API: http://localhost:8001
@@ -86,11 +88,15 @@ Frontend: http://localhost:3000
 ```bash
 # Customer MCP
 cd mcp/customer
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python -m customer_mcp
+python3 -m customer_mcp
 
 # Admin MCP
 cd mcp/admin
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-python -m admin_mcp
+python3 -m admin_mcp
 ```

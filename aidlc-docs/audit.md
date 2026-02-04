@@ -377,3 +377,23 @@
 **Context**: Unit 0 complete, proceeding to Unit 1 (Backend)
 
 ---
+
+## Unit 3 (MCP) - Functional Design Start
+**Timestamp**: 2026-02-04T13:53:32+09:00
+**User Input**: "Unit3의 Functional Design 을 진행해줘."
+**AI Response**: Unit 3 (MCP Servers) Functional Design 시작
+**Context**: CONSTRUCTION PHASE - Unit 3 Functional Design
+
+---
+
+## Unit 3 (MCP) - Functional Design Complete
+**Timestamp**: 2026-02-04T14:15:35+09:00
+**User Input**: "done"
+**AI Response**: Functional Design 문서 생성 완료
+**Context**: 
+- Q1: Redis 세션 관리 (key: mcp:{session_id})
+- Q2: B (Backend API 장바구니)
+- Q3: B (구조화된 에러 객체)
+**Artifacts**: aidlc-docs/construction/unit3-mcp/functional-design/functional-design.md
+
+---
