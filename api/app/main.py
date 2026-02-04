@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from app.routers.customer import customer_router
+from app.routers.admin import admin_router
 
 app = FastAPI(title="Table Order API", version="1.0.0")
 
@@ -15,8 +17,5 @@ app.add_middleware(
 def health_check():
     return {"status": "ok"}
 
-# Routers will be added here
-# from .routers import customer, admin, sse
-# app.include_router(customer.router, prefix="/api/customer", tags=["Customer"])
-# app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
-# app.include_router(sse.router, prefix="/api/sse", tags=["SSE"])
+app.include_router(customer_router)
+app.include_router(admin_router)
