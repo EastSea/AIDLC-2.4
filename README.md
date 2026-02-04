@@ -1,3 +1,69 @@
+# Table Order Service (테이블오더)
+
+레스토랑용 디지털 주문 시스템 MVP
+
+## 프로젝트 구조
+
+```
+├── api/          # Backend (FastAPI)
+├── web/          # Frontend (React)
+├── mcp/          # MCP Servers
+│   ├── core/     # 공유 모듈
+│   ├── customer/ # 고객용 MCP
+│   └── admin/    # 관리자용 MCP
+├── infra/        # Docker Compose (PostgreSQL, Redis)
+├── mock/         # Mock API Server
+└── docs/         # OpenAPI Spec
+```
+
+## 빠른 시작
+
+### 1. 환경 설정
+자세한 내용은 [infra/env-setup.md](infra/env-setup.md) 참조
+
+```bash
+# Infrastructure 시작
+cd infra && docker compose up -d
+
+# Mock Server 시작
+cd mock && python3 mock-server.py
+```
+
+### 2. Frontend 실행
+```bash
+cd web && npm install && npm start
+```
+http://localhost:3000
+
+### 3. MCP Server 테스트
+```bash
+cd mcp/customer
+source venv/bin/activate
+pip install -e ../core
+export API_URL=http://localhost:8001/api
+export REDIS_URL=redis://localhost:6379
+npx @modelcontextprotocol/inspector python3 server.py
+```
+http://localhost:5173
+
+## 기술 스택
+
+| 구분 | 기술 |
+|------|------|
+| Backend | FastAPI, PostgreSQL, Redis, SSE |
+| Frontend | React, MUI |
+| MCP | Python, MCP SDK, httpx |
+| Infra | Docker Compose |
+
+## 문서
+
+- [환경 설정 가이드](infra/env-setup.md)
+- [API 스펙](docs/openapi.yaml)
+- [MCP Inspector 가이드](aidlc-docs/construction/build-and-test/mcp-inspector-guide.md)
+- [브라우저 테스트 가이드](BROWSER_TEST_GUIDE.md)
+
+---
+
 # AI-DLC Korea Workflow Enhancement
 
 ## Purpose
