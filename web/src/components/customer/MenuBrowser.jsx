@@ -60,6 +60,10 @@ const MainContent = styled.div`
 
 const MenuGrid = styled(Grid)`
   margin-top: 16px;
+
+  .MuiGrid-item {
+    display: flex;
+  }
 `;
 
 const MenuCard = styled(Card)`
