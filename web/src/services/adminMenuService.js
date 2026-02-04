@@ -1,13 +1,13 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/admin`;
+const client = createApiClient();
 
 /**
  * Fetch all menus for admin
  * @returns {Promise<Array>} Menu array
  */
 export const getAdminMenus = async () => {
-  const response = await axios.get(`${API_BASE}/menus`);
+  const response = await client.get('/api/admin/menus');
   return response.data;
 };
 
@@ -17,7 +17,7 @@ export const getAdminMenus = async () => {
  * @returns {Promise<Object>} Created menu
  */
 export const createMenu = async (menuData) => {
-  const response = await axios.post(`${API_BASE}/menus`, menuData);
+  const response = await client.post('/api/admin/menus', menuData);
   return response.data;
 };
 
@@ -28,7 +28,7 @@ export const createMenu = async (menuData) => {
  * @returns {Promise<Object>} Updated menu
  */
 export const updateMenu = async (menuId, menuData) => {
-  const response = await axios.put(`${API_BASE}/menus/${menuId}`, menuData);
+  const response = await client.put(`/api/admin/menus/${menuId}`, menuData);
   return response.data;
 };
 
@@ -38,6 +38,6 @@ export const updateMenu = async (menuId, menuData) => {
  * @returns {Promise<{success: boolean}>}
  */
 export const deleteMenu = async (menuId) => {
-  const response = await axios.delete(`${API_BASE}/menus/${menuId}`);
+  const response = await client.delete(`/api/admin/menus/${menuId}`);
   return response.data;
 };

@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/customer`;
+const client = createApiClient();
 
 /**
  * Customer table login
@@ -10,7 +10,7 @@ const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000
  * @returns {Promise<{token: string, tableId: string, sessionId: string}>}
  */
 export const loginTable = async (storeCode, tableNumber, password) => {
-  const response = await axios.post(`${API_BASE}/auth/login`, {
+  const response = await client.post('/api/customer/auth/login', {
     store_code: storeCode,
     table_number: tableNumber,
     password,
@@ -26,7 +26,7 @@ export const loginTable = async (storeCode, tableNumber, password) => {
  * @returns {Promise<{token: string, storeId: string, userId: string}>}
  */
 export const loginAdmin = async (storeCode, username, password) => {
-  const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/admin/auth/login`, {
+  const response = await client.post('/api/admin/auth/login', {
     store_code: storeCode,
     username,
     password,

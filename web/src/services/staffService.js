@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/customer`;
+const client = createApiClient();
 
 /**
  * Call staff to table
@@ -8,6 +8,6 @@ const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000
  * @returns {Promise<{success: boolean, callId: string}>}
  */
 export const callStaff = async (tableId) => {
-  const response = await axios.post(`${API_BASE}/staff-call`, { table_id: tableId });
+  const response = await client.post('/api/customer/staff-call', { table_id: tableId });
   return response.data;
 };

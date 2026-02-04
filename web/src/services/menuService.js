@@ -1,13 +1,13 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/customer`;
+const client = createApiClient();
 
 /**
  * Fetch all categories
  * @returns {Promise<Array>} Category array
  */
 export const getCategories = async () => {
-  const response = await axios.get(`${API_BASE}/categories`);
+  const response = await client.get('/api/customer/categories');
   return response.data;
 };
 
@@ -22,7 +22,7 @@ export const getMenus = async (categoryId, servingSize) => {
   if (categoryId) params.category_id = categoryId;
   if (servingSize) params.serving_size = servingSize;
   
-  const response = await axios.get(`${API_BASE}/menus`, { params });
+  const response = await client.get('/api/customer/menus', { params });
   return response.data;
 };
 
@@ -32,6 +32,6 @@ export const getMenus = async (categoryId, servingSize) => {
  * @returns {Promise<Object>} Menu object
  */
 export const getMenuDetail = async (menuId) => {
-  const response = await axios.get(`${API_BASE}/menus/${menuId}`);
+  const response = await client.get(`/api/customer/menus/${menuId}`);
   return response.data;
 };

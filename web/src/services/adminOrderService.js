@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/admin`;
+const client = createApiClient();
 
 /**
  * Fetch orders for admin
@@ -9,7 +9,7 @@ const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000
  */
 export const getAdminOrders = async (tableId) => {
   const params = tableId ? { table_id: tableId } : {};
-  const response = await axios.get(`${API_BASE}/orders`, { params });
+  const response = await client.get('/api/admin/orders', { params });
   return response.data;
 };
 
@@ -20,7 +20,7 @@ export const getAdminOrders = async (tableId) => {
  * @returns {Promise<{success: boolean}>}
  */
 export const updateOrderStatus = async (orderId, status) => {
-  const response = await axios.patch(`${API_BASE}/orders/${orderId}/status`, { status });
+  const response = await client.patch(`/api/admin/orders/${orderId}/status`, { status });
   return response.data;
 };
 
@@ -30,6 +30,6 @@ export const updateOrderStatus = async (orderId, status) => {
  * @returns {Promise<{success: boolean}>}
  */
 export const deleteOrder = async (orderId) => {
-  const response = await axios.delete(`${API_BASE}/orders/${orderId}`);
+  const response = await client.delete(`/api/admin/orders/${orderId}`);
   return response.data;
 };

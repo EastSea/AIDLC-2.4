@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/customer`;
+const client = createApiClient();
 
 /**
  * Create new order
@@ -9,7 +9,7 @@ const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000
  * @returns {Promise<{orderId: string, orderNumber: string}>}
  */
 export const createOrder = async (sessionId, items) => {
-  const response = await axios.post(`${API_BASE}/orders`, { 
+  const response = await client.post('/api/customer/orders', { 
     session_id: sessionId, 
     items: items.map(item => ({ menu_id: item.menuId, quantity: item.quantity }))
   });
@@ -22,7 +22,7 @@ export const createOrder = async (sessionId, items) => {
  * @returns {Promise<Array>} Order array
  */
 export const getOrders = async (sessionId) => {
-  const response = await axios.get(`${API_BASE}/orders`, {
+  const response = await client.get('/api/customer/orders', {
     params: { session_id: sessionId }
   });
   return response.data;

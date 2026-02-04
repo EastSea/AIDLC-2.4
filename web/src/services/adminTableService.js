@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { createApiClient } from './apiClient';
 
-const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/admin`;
+const client = createApiClient();
 
 /**
  * Mark table as completed
@@ -8,6 +8,6 @@ const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000
  * @returns {Promise<{success: boolean}>}
  */
 export const completeTable = async (tableId) => {
-  const response = await axios.post(`${API_BASE}/tables/${tableId}/complete`);
+  const response = await client.post(`/api/admin/tables/${tableId}/complete`);
   return response.data;
 };
