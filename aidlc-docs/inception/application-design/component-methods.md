@@ -19,14 +19,23 @@
 | GET | `/menus/{id}` | 메뉴 상세 | - | `Menu` |
 | GET | `/menus/{id}/image` | 메뉴 이미지 | - | `image/jpeg` |
 
-### 1.4 Orders
+### 1.4 Cart
+| Method | Endpoint | Description | Request | Response |
+|--------|----------|-------------|---------|----------|
+| GET | `/cart` | 장바구니 조회 | `?session_id=` | `Cart` |
+| POST | `/cart` | 장바구니 추가 | `{ session_id, menu_id, quantity, options? }` | `Cart` |
+| DELETE | `/cart` | 장바구니 비우기 | `?session_id=` | `{ success }` |
+| PATCH | `/cart/{item_id}` | 수량 변경 | `{ quantity }` | `Cart` |
+| DELETE | `/cart/{item_id}` | 항목 삭제 | - | `Cart` |
+
+### 1.5 Orders
 | Method | Endpoint | Description | Request | Response |
 |--------|----------|-------------|---------|----------|
 | POST | `/orders` | 주문 생성 | `{ session_id, items: [{menu_id, quantity}] }` | `{ order_id, order_number }` |
 | GET | `/orders` | 주문 내역 | `?session_id=` | `[Order]` |
 | GET | `/orders/{id}` | 주문 상세 | - | `Order` |
 
-### 1.5 Staff Call
+### 1.6 Staff Call
 | Method | Endpoint | Description | Request | Response |
 |--------|----------|-------------|---------|----------|
 | POST | `/staff-call` | 직원 호출 | `{ table_id }` | `{ success, call_id }` |
