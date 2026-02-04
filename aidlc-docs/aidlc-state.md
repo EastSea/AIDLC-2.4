@@ -42,7 +42,7 @@
 - [ ] Unit 1 (Backend) - NFR Design
 - [ ] Unit 1 (Backend) - Infrastructure Design
 - [ ] Unit 1 (Backend) - Code Generation
-- [ ] Unit 2 (Frontend) - Code Generation
+- [x] Unit 2 (Frontend) - Code Generation (2026-02-04T14:11:54+09:00)
 - [ ] Unit 3 (MCP) - Code Generation
 - [ ] Build and Test - EXECUTE
 
@@ -51,6 +51,6 @@
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: Functional Design
-- **Next Stage**: Per-Unit Design (Unit 0: Common)
-- **Status**: Starting CONSTRUCTION PHASE
+- **Current Stage**: Code Generation
+- **Next Stage**: Unit 3 (MCP) - Code Generation
+- **Status**: Unit 2 (Frontend) complete, awaiting approval
