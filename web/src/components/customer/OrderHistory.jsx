@@ -55,19 +55,19 @@ const OrderHistory = () => {
       ) : (
         liveOrders.map((order) => (
           <div key={order.id} className="order-item">
-            <h3>주문 #{order.orderNumber}</h3>
+            <h3>주문 #{order.orderNumber || order.order_number}</h3>
             <span className={`status-badge ${order.status}`}>
               {getStatusBadge(order.status)}
             </span>
             <div className="order-items">
-              {order.items.map((item, idx) => (
+              {(order.items || []).map((item, idx) => (
                 <div key={idx}>
-                  {item.menuName} x {item.quantity}
+                  {item.menuName || item.menu_name} x {item.quantity}
                 </div>
               ))}
             </div>
-            <p>총 금액: {order.totalAmount.toLocaleString()}원</p>
-            <p>주문 시간: {new Date(order.createdAt).toLocaleString()}</p>
+            <p>총 금액: {(order.totalAmount || order.total_amount || 0).toLocaleString()}원</p>
+            <p>주문 시간: {new Date(order.createdAt || order.created_at).toLocaleString()}</p>
           </div>
         ))
       )}
