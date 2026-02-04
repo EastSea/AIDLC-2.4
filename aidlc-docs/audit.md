@@ -397,3 +397,32 @@
 **Artifacts**: aidlc-docs/construction/unit3-mcp/functional-design/functional-design.md
 
 ---
+
+## Unit 3 (MCP) - NFR Requirements Start
+**Timestamp**: 2026-02-04T14:35:06+09:00
+**User Input**: "네 진행하세요"
+**AI Response**: NFR Requirements 단계 시작
+**Context**: CONSTRUCTION PHASE - Unit 3 NFR Requirements
+
+---
+
+## Unit 3 (MCP) - NFR Requirements Complete
+**Timestamp**: 2026-02-04T14:36:44+09:00
+**User Input**: "done"
+**AI Response**: NFR Requirements 문서 생성 완료
+**Context**: 
+- Q1: A (1초 이내)
+- Q2: C (100개 이상)
+- Q3: C (상세 로깅)
+- Q4: C (3회 재시도)
+**Artifacts**: aidlc-docs/construction/unit3-mcp/nfr-requirements/nfr-requirements.md
+
+---
+
+## Unit 3 (MCP) - Code Generation Start (TDD)
+**Timestamp**: 2026-02-04T14:38:10+09:00
+**User Input**: "A"
+**AI Response**: TDD 방식 Code Generation 시작
+**Context**: CONSTRUCTION PHASE - Unit 3 Code Generation (TDD)
+
+---
