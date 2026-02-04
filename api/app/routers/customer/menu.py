@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import Response
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from app.database import get_db
 from app.schemas.menu import MenuResponse
 from app.services.menu import MenuService
-from app.dependencies import get_current_table
-from app.models import Table
 from typing import List, Optional
 
 router = APIRouter(prefix="/api/customer/menus", tags=["customer-menus"])
@@ -14,11 +13,12 @@ router = APIRouter(prefix="/api/customer/menus", tags=["customer-menus"])
 def get_menus(
     category_id: Optional[str] = None,
     serving_size: Optional[str] = None,
-    table: Table = Depends(get_current_table),
     db: Session = Depends(get_db)
 ):
+    result = db.execute(text("SELECT id FROM stores LIMIT 1")).fetchone()
+    store_id = result[0] if result else "store-1"
     service = MenuService(db)
-    menus = service.get_menus(str(table.store_id), category_id, serving_size)
+    menus = service.get_menus(store_id, category_id, serving_size)
     
     result = []
     for menu in menus:
@@ -38,11 +38,7 @@ def get_menus(
     return result
 
 @router.get("/{menu_id}", response_model=MenuResponse)
-def get_menu(
-    menu_id: str,
-    table: Table = Depends(get_current_table),
-    db: Session = Depends(get_db)
-):
+def get_menu(menu_id: str, db: Session = Depends(get_db)):
     service = MenuService(db)
     menu = service.get_menu(menu_id)
     if not menu:
@@ -61,11 +57,7 @@ def get_menu(
     }
 
 @router.get("/{menu_id}/image")
-def get_menu_image(
-    menu_id: str,
-    table: Table = Depends(get_current_table),
-    db: Session = Depends(get_db)
-):
+def get_menu_image(menu_id: str, db: Session = Depends(get_db)):
     service = MenuService(db)
     image = service.get_menu_image(menu_id)
     if not image:
