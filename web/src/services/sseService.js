@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8001/api/customer';
+const API_BASE = `${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/customer`;
 
 /**
  * Subscribe to order status updates
@@ -24,7 +24,7 @@ export const subscribeOrderStatus = (tableId, onMessage) => {
  * @returns {EventSource} EventSource instance
  */
 export const subscribeAdminOrders = (token, onMessage) => {
-  const eventSource = new EventSource(`http://localhost:8001/api/admin/sse/orders?token=${token}`);
+  const eventSource = new EventSource(`${process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000'}/api/admin/sse/orders?token=${token}`);
   
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data);

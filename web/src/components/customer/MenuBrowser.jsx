@@ -70,6 +70,7 @@ const MenuCard = styled(Card)`
   cursor: pointer;
   transition: transform 0.2s;
   height: 350px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 
