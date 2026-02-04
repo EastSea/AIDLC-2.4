@@ -85,18 +85,76 @@ Frontend: http://localhost:3000
 
 ## 6. MCP Server 실행
 
+### 6.1 mcp-core 설치 (공통)
 ```bash
-# Customer MCP
+cd mcp/core
+pip install -e .
+```
+
+### 6.2 Customer MCP
+```bash
 cd mcp/customer
 python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
-python3 -m customer_mcp
+pip install -e ../core
 
-# Admin MCP
+# 환경 변수 설정
+export API_URL=http://localhost:8001/api  # Mock Server
+export REDIS_URL=redis://localhost:6379
+
+python server.py
+```
+
+### 6.3 Admin MCP
+```bash
 cd mcp/admin
 python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate
 pip install -r requirements.txt
-python3 -m admin_mcp
+pip install -e ../core
+
+# 환경 변수 설정
+export API_URL=http://localhost:8001/api  # Mock Server
+export REDIS_URL=redis://localhost:6379
+
+python server.py
 ```
+
+## 7. MCP Inspector 테스트
+
+MCP Server를 Inspector로 테스트하려면:
+
+### 7.1 Customer MCP Inspector
+```bash
+cd mcp/customer
+source venv/bin/activate
+export API_URL=http://localhost:8001/api
+export REDIS_URL=redis://localhost:6379
+
+npx @modelcontextprotocol/inspector python server.py
+```
+
+브라우저에서 `http://localhost:5173` 접속
+
+### 7.2 테스트 시나리오
+
+**Customer MCP:**
+1. `set_table_context` → `{"store_code": "STORE001", "table_number": 1, "password": "1234"}`
+2. `get_categories` → (파라미터 없음)
+3. `get_menus` → `{"category_id": "cat-1"}`
+4. `add_to_cart` → `{"menu_id": "menu-1", "quantity": 2}`
+5. `place_order` → (파라미터 없음)
+
+**Admin MCP:**
+1. `set_admin_context` → `{"store_code": "STORE001", "username": "admin", "password": "admin123"}`
+2. `get_orders` → (파라미터 없음)
+3. `update_order_status` → `{"order_id": "order-1", "status": "preparing"}`
+
+## 8. 환경 변수 요약
+
+| 변수 | 값 | 용도 |
+|------|-----|------|
+| `DATABASE_URL` | `postgresql://tableorder:tableorder123@localhost:5432/tableorder` | Backend |
+| `REDIS_URL` | `redis://localhost:6379` | Backend, MCP |
+| `API_URL` | `http://localhost:8000/api` (실서버) / `http://localhost:8001/api` (Mock) | MCP |
