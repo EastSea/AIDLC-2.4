@@ -26,10 +26,11 @@ const PageWrapper = styled.div`
   padding-bottom: 100px;
 `;
 
-const MenuImage = styled.img`
+const MenuImage = styled.div`
   width: 100%;
   height: 400px;
-  object-fit: cover;
+  background-size: cover;
+  background-position: center;
 `;
 
 const ContentSection = styled(Paper)`
@@ -141,8 +142,11 @@ const MenuDetail = () => {
 
       <Box sx={{ mt: 8 }}>
         <MenuImage 
-          src={menu.image_url || 'https://via.placeholder.com/800x400?text=No+Image'} 
-          alt={menu.name} 
+          style={{
+            background: menu.image_url 
+              ? `url(${menu.image_url}) center/cover`
+              : 'linear-gradient(135deg, #ffd6e8 0%, #c5e3ff 100%)'
+          }}
         />
         
         <ContentSection elevation={3}>

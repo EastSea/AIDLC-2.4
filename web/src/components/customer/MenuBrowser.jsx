@@ -60,17 +60,14 @@ const MainContent = styled.div`
 
 const MenuGrid = styled(Grid)`
   margin-top: 16px;
-
-  .MuiGrid-item {
-    display: flex;
-  }
 `;
 
 const MenuCard = styled(Card)`
   cursor: pointer;
   transition: transform 0.2s;
-  height: 350px;
-  width: 100%;
+  height: 420px;
+  width: 200px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -80,15 +77,19 @@ const MenuCard = styled(Card)`
   }
 
   .MuiCardMedia-root {
-    height: 180px;
+    height: 200px;
+    flex-shrink: 0;
     object-fit: cover;
+    background: linear-gradient(135deg, #ffd6e8 0%, #c5e3ff 100%);
   }
 
   .MuiCardContent-root {
-    flex: 1;
+    height: 220px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     padding: 16px;
+    overflow: hidden;
   }
 `;
 
@@ -206,33 +207,28 @@ const MenuBrowser = () => {
           ) : (
             <MenuGrid container spacing={3}>
               {menus.map((menu) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={menu.id}>
+                <Grid item xs={12} sm={6} md={4} lg={3} key={menu.id} sx={{ display: 'flex' }}>
                   <MenuCard onClick={() => navigate(`/menu/${menu.id}`)}>
                     <CardMedia
-                      component="img"
-                      image={
-                        menu.image_url ||
-                        "https://via.placeholder.com/300x200?text=No+Image"
-                      }
-                      alt={menu.name}
-                    />
-                    <CardContent
+                      component="div"
                       sx={{
-                        flexGrow: 1,
-                        display: "flex",
-                        flexDirection: "column",
+                        height: 200,
+                        background: menu.image_url 
+                          ? `url(${menu.image_url}) center/cover`
+                          : 'linear-gradient(135deg, #ffd6e8 0%, #c5e3ff 100%)'
                       }}
-                    >
+                    />
+                    <CardContent>
                       <Typography
                         variant="h6"
-                        gutterBottom
                         sx={{
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: "vertical",
-                          minHeight: "3.6em",
+                          height: "3.6em",
+                          mb: 1
                         }}
                       >
                         {menu.name}
@@ -240,15 +236,14 @@ const MenuBrowser = () => {
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        gutterBottom
                         sx={{
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: "vertical",
-                          minHeight: "2.8em",
-                          flexGrow: 1,
+                          height: "2.8em",
+                          mb: 1
                         }}
                       >
                         {menu.description}
@@ -265,7 +260,7 @@ const MenuBrowser = () => {
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
-                          mt: 2,
+                          mt: "auto"
                         }}
                       >
                         <PriceText>{menu.price.toLocaleString()}원</PriceText>
