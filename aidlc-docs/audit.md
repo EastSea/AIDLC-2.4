@@ -283,3 +283,97 @@
 **Context**: Application Design stage - incorporating MCP architecture requirements
 
 ---
+
+## Application Design - Approved
+**Timestamp**: 2026-02-04T13:16:09+09:00
+**User Input**: "네 승인하겠습니다. 다음 단계로 진행하세요"
+**AI Response**: Application Design approved, proceeding to Units Generation
+**Context**: Application Design stage complete, starting Units Generation
+
+---
+
+## Units Generation - Planning Started
+**Timestamp**: 2026-02-04T13:16:39+09:00
+**User Input**: N/A
+**AI Response**: Created unit-of-work-plan.md with 4 planning questions
+**Context**: Units Generation stage - Part 1 Planning, awaiting user answers
+
+---
+
+## Units Generation - User Answers Received
+**Timestamp**: 2026-02-04T13:21:01+09:00
+**User Input**: "done"
+**User Answers**:
+- Q1 (역할 분배): A - 레이어별 분배 (Backend / Frontend / MCP)
+- Q2 (통합 시점): C - 각 Phase 완료 시 통합
+- Q3 (API 계약): A - OpenAPI (Swagger) 스펙 먼저 정의
+- Q4 (디렉토리 구조): B - 기능별 분리 (/api, /web, /mcp/*, /infra)
+**AI Response**: Answers validated, proceeding to unit generation
+**Context**: Units Generation stage - Part 2 Generation
+
+---
+
+## Units Generation - Additional Requirements
+**Timestamp**: 2026-02-04T13:24:51+09:00
+**User Input**: "Infrastructure 는 사전에 공통으로 선 진행 후 개별 unit을 진행하고, 그리고 Swagger API 규격정의 후 Backend 개발완료 전 frontend와 MCP 에서 사용가능한 mockup api 까지 공통으로 선 개발한후 개별 개발 진행."
+**AI Response**: Phase 0 (공통 선행 작업) 추가 - Infrastructure + OpenAPI + Mock API
+**Context**: Units Generation stage - incorporating common pre-work phase
+
+---
+
+## Units Generation - Additional Requirements 2
+**Timestamp**: 2026-02-04T13:26:50+09:00
+**User Input**: "mock 서버 api 구동 및 docker compose 를 통한 redis 로컬 개발환경 설치를 위한 env-setup.md 도 선행단꼐에서 제작해줘."
+**AI Response**: Phase 0에 env-setup.md 추가 (Mock Server 구동 + Docker Compose + Redis 설정)
+**Context**: Units Generation stage - adding environment setup documentation
+
+---
+
+## Units Generation - Complete
+**Timestamp**: 2026-02-04T13:27:00+09:00
+**User Input**: N/A
+**AI Response**: Units Generation completed with Phase 0 common pre-work
+**Generated Artifacts**:
+- unit-of-work.md: Unit 정의 (4 Units: Common, Backend, Frontend, MCP)
+- unit-of-work-dependency.md: 의존성 매트릭스 및 병렬 개발 전략
+- unit-of-work-story-map.md: Story-Unit 매핑
+**Key Decisions**:
+- Phase 0: 공통 선행 (Infrastructure + OpenAPI + Mock API + env-setup.md)
+- 3명 레이어별 분배 (Backend / Frontend / MCP)
+- Mock API로 블로킹 최소화
+- Redis 추가 (세션 관리)
+**Context**: Units Generation stage complete, awaiting user approval
+
+---
+
+## Units Generation - Approved
+**Timestamp**: 2026-02-04T13:30:26+09:00
+**User Input**: "승인 후 다음단계 go"
+**AI Response**: Units Generation approved, proceeding to CONSTRUCTION PHASE
+**Context**: INCEPTION PHASE complete, starting CONSTRUCTION PHASE
+
+---
+
+## CONSTRUCTION - Unit 0 Approach
+**Timestamp**: 2026-02-04T13:31:18+09:00
+**User Input**: "B"
+**AI Response**: Unit 0 (Common) - 바로 Code Generation 진행 (설계 단계 생략)
+**Context**: Unit 0 Code Generation 시작
+
+---
+
+## Unit 0 (Common) - Code Generation Complete
+**Timestamp**: 2026-02-04T13:41:57+09:00
+**User Input**: "네 그렇게 해주세요"
+**AI Response**: Unit 0 Code Generation 완료 (DB Models는 Unit 1으로 이동)
+**Generated Files**:
+- /infra/docker-compose.yml (PostgreSQL + Redis)
+- /infra/env-setup.md (환경 설정 가이드)
+- /docs/openapi.yaml (API 스펙)
+- /mock/mock-server.py (Mock API)
+- /api/ 기본 구조 (main.py, config.py, database.py)
+- /web/ 기본 구조 (package.json, App.js)
+- /mcp/ 기본 구조 (core, customer, admin)
+**Context**: Unit 0 complete, proceeding to Unit 1 (Backend)
+
+---

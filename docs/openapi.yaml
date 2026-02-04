@@ -1,0 +1,486 @@
+openapi: 3.0.3
+info:
+  title: Table Order API
+  version: 1.0.0
+  description: 테이블오더 서비스 API
+
+servers:
+  - url: http://localhost:8000/api
+    description: Local Development
+  - url: http://localhost:8001/api
+    description: Mock Server
+
+tags:
+  - name: Customer Auth
+  - name: Customer Menu
+  - name: Customer Order
+  - name: Customer Staff
+  - name: Admin Auth
+  - name: Admin Order
+  - name: Admin Table
+  - name: Admin Menu
+  - name: SSE
+
+paths:
+  # Customer Auth
+  /customer/auth/login:
+    post:
+      tags: [Customer Auth]
+      summary: 테이블 로그인
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [store_code, table_number, password]
+              properties:
+                store_code: { type: string }
+                table_number: { type: integer }
+                password: { type: string }
+      responses:
+        200:
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  table_id: { type: string, format: uuid }
+                  session_id: { type: string, format: uuid }
+                  table_number: { type: integer }
+
+  # Customer Menu
+  /customer/categories:
+    get:
+      tags: [Customer Menu]
+      summary: 카테고리 목록
+      responses:
+        200:
+          description: 카테고리 목록
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /customer/menus:
+    get:
+      tags: [Customer Menu]
+      summary: 메뉴 목록
+      parameters:
+        - name: category_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: serving_size
+          in: query
+          schema: { type: string, enum: [all, 1-2, 3-4] }
+      responses:
+        200:
+          description: 메뉴 목록
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+
+  /customer/menus/{menu_id}:
+    get:
+      tags: [Customer Menu]
+      summary: 메뉴 상세
+      parameters:
+        - name: menu_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 메뉴 상세
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+
+  /customer/menus/{menu_id}/image:
+    get:
+      tags: [Customer Menu]
+      summary: 메뉴 이미지
+      parameters:
+        - name: menu_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 이미지
+          content:
+            image/jpeg: {}
+
+  # Customer Order
+  /customer/orders:
+    get:
+      tags: [Customer Order]
+      summary: 주문 내역
+      parameters:
+        - name: session_id
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 주문 목록
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      tags: [Customer Order]
+      summary: 주문 생성
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [session_id, items]
+              properties:
+                session_id: { type: string, format: uuid }
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      menu_id: { type: string, format: uuid }
+                      quantity: { type: integer }
+      responses:
+        201:
+          description: 주문 생성됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id: { type: string, format: uuid }
+                  order_number: { type: string }
+
+  # Customer Staff Call
+  /customer/staff-call:
+    post:
+      tags: [Customer Staff]
+      summary: 직원 호출
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [table_id]
+              properties:
+                table_id: { type: string, format: uuid }
+      responses:
+        200:
+          description: 호출 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  call_id: { type: string, format: uuid }
+
+  # Admin Auth
+  /admin/auth/login:
+    post:
+      tags: [Admin Auth]
+      summary: 관리자 로그인
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [store_code, username, password]
+              properties:
+                store_code: { type: string }
+                username: { type: string }
+                password: { type: string }
+      responses:
+        200:
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  store_id: { type: string, format: uuid }
+                  user_id: { type: string, format: uuid }
+
+  # Admin Orders
+  /admin/orders:
+    get:
+      tags: [Admin Order]
+      summary: 주문 목록
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: table_id
+          in: query
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 주문 목록
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /admin/orders/{order_id}/status:
+    patch:
+      tags: [Admin Order]
+      summary: 주문 상태 변경
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: { type: string, enum: [pending, preparing, completed] }
+      responses:
+        200:
+          description: 상태 변경됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  /admin/orders/{order_id}:
+    delete:
+      tags: [Admin Order]
+      summary: 주문 삭제
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: order_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 삭제됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  # Admin Tables
+  /admin/tables/{table_id}/complete:
+    post:
+      tags: [Admin Table]
+      summary: 테이블 이용 완료
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: table_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 완료 처리됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  # Admin Menu
+  /admin/menus:
+    get:
+      tags: [Admin Menu]
+      summary: 메뉴 목록
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: 메뉴 목록
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+    post:
+      tags: [Admin Menu]
+      summary: 메뉴 등록
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuCreate'
+      responses:
+        201:
+          description: 메뉴 생성됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+
+  /admin/menus/{menu_id}:
+    put:
+      tags: [Admin Menu]
+      summary: 메뉴 수정
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: menu_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuCreate'
+      responses:
+        200:
+          description: 수정됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+    delete:
+      tags: [Admin Menu]
+      summary: 메뉴 삭제
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: menu_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 삭제됨
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  # SSE
+  /sse/orders:
+    get:
+      tags: [SSE]
+      summary: 관리자용 주문 이벤트 스트림
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: SSE 스트림
+          content:
+            text/event-stream: {}
+
+  /sse/order-status/{table_id}:
+    get:
+      tags: [SSE]
+      summary: 고객용 주문 상태 스트림
+      parameters:
+        - name: table_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: SSE 스트림
+          content:
+            text/event-stream: {}
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Category:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+        display_order: { type: integer }
+
+    Menu:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        category_id: { type: string, format: uuid }
+        name: { type: string }
+        price: { type: integer }
+        description: { type: string }
+        serving_size: { type: string }
+        display_order: { type: integer }
+        is_available: { type: boolean }
+        image_url: { type: string }
+
+    MenuCreate:
+      type: object
+      required: [category_id, name, price]
+      properties:
+        category_id: { type: string, format: uuid }
+        name: { type: string }
+        price: { type: integer }
+        description: { type: string }
+        serving_size: { type: string, default: all }
+        display_order: { type: integer, default: 0 }
+
+    Order:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        session_id: { type: string, format: uuid }
+        order_number: { type: string }
+        status: { type: string, enum: [pending, preparing, completed] }
+        total_amount: { type: integer }
+        created_at: { type: string, format: date-time }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    OrderItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        menu_id: { type: string, format: uuid }
+        menu_name: { type: string }
+        quantity: { type: integer }
+        unit_price: { type: integer }
+        subtotal: { type: integer }

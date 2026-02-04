@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+connexion[flask,swagger-ui]
+pyyaml

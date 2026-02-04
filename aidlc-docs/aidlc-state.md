@@ -33,21 +33,24 @@
 - [x] User Stories (2026-02-04T12:31:29+09:00)
 - [x] Workflow Planning (2026-02-04T12:34:06+09:00)
 - [x] Application Design (2026-02-04T12:50:28+09:00)
-- [ ] Units Generation - EXECUTE
+- [x] Units Generation (2026-02-04T13:26:50+09:00)
 
 ### 🟢 CONSTRUCTION PHASE
-- [ ] Functional Design - EXECUTE
-- [ ] NFR Requirements - EXECUTE
-- [ ] NFR Design - EXECUTE
-- [ ] Infrastructure Design - EXECUTE
-- [ ] Code Generation - EXECUTE
+- [x] Unit 0 (Common) - Code Generation (2026-02-04T13:41:57+09:00)
+- [ ] Unit 1 (Backend) - Functional Design
+- [ ] Unit 1 (Backend) - NFR Requirements
+- [ ] Unit 1 (Backend) - NFR Design
+- [ ] Unit 1 (Backend) - Infrastructure Design
+- [ ] Unit 1 (Backend) - Code Generation
+- [ ] Unit 2 (Frontend) - Code Generation
+- [ ] Unit 3 (MCP) - Code Generation
 - [ ] Build and Test - EXECUTE
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations - PLACEHOLDER
 
 ## Current Status
-- **Lifecycle Phase**: INCEPTION
-- **Current Stage**: Workflow Planning Complete
-- **Next Stage**: Application Design
-- **Status**: Awaiting user approval
+- **Lifecycle Phase**: CONSTRUCTION
+- **Current Stage**: Functional Design
+- **Next Stage**: Per-Unit Design (Unit 0: Common)
+- **Status**: Starting CONSTRUCTION PHASE
