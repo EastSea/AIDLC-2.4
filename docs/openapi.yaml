@@ -13,6 +13,7 @@ servers:
 tags:
   - name: Customer Auth
   - name: Customer Menu
+  - name: Customer Cart
   - name: Customer Order
   - name: Customer Staff
   - name: Admin Auth
@@ -118,6 +119,104 @@ paths:
           description: 이미지
           content:
             image/jpeg: {}
+
+  # Customer Cart
+  /customer/cart:
+    get:
+      tags: [Customer Cart]
+      summary: 장바구니 조회
+      parameters:
+        - name: session_id
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 장바구니 내용
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    post:
+      tags: [Customer Cart]
+      summary: 장바구니 추가
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [session_id, menu_id, quantity]
+              properties:
+                session_id: { type: string, format: uuid }
+                menu_id: { type: string, format: uuid }
+                quantity: { type: integer }
+                options: { type: string }
+      responses:
+        200:
+          description: 추가됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: [Customer Cart]
+      summary: 장바구니 비우기
+      parameters:
+        - name: session_id
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 비움
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+
+  /customer/cart/{item_id}:
+    patch:
+      tags: [Customer Cart]
+      summary: 장바구니 항목 수량 변경
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity: { type: integer }
+      responses:
+        200:
+          description: 수정됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: [Customer Cart]
+      summary: 장바구니 항목 삭제
+      parameters:
+        - name: item_id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        200:
+          description: 삭제됨
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
 
   # Customer Order
   /customer/orders:
@@ -484,3 +583,24 @@ components:
         quantity: { type: integer }
         unit_price: { type: integer }
         subtotal: { type: integer }
+
+    Cart:
+      type: object
+      properties:
+        session_id: { type: string, format: uuid }
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        total: { type: integer }
+
+    CartItem:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        menu_id: { type: string, format: uuid }
+        menu_name: { type: string }
+        quantity: { type: integer }
+        unit_price: { type: integer }
+        subtotal: { type: integer }
+        options: { type: string }
