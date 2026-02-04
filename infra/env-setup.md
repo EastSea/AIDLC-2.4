@@ -132,7 +132,7 @@ source venv/bin/activate
 export API_URL=http://localhost:8001/api
 export REDIS_URL=redis://localhost:6379
 
-npx @modelcontextprotocol/inspector python server.py
+npx @modelcontextprotocol/inspector python3 server.py
 ```
 
 브라우저에서 `http://localhost:5173` 접속
